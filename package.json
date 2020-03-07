@@ -1,0 +1,14 @@
+{
+  "name": "game",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "make"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "ggbgfx-cli": "^1.0.0"
+  }
+}

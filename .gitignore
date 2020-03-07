@@ -1,0 +1,13 @@
+*.lst
+*.map
+*.o
+*.rel
+*.sav
+*.sym
+*.ASM
+.DS_Store
+test.gb
+
+*.sw[ap]
+
+node_modules
