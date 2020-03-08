@@ -1,8 +1,16 @@
 CC  = lcc
 GGBGFX = ../node_modules/.bin/ggbgfx
 
+# sprite conversion steps
+#   1. change white to red
+#   2. change light to white
+#   3. change dark to white
+#   4. change red to dark
+
 all: \
 	gumdrop.sprite.o \
+	rolly.sprite.o \
+	ninja.sprite.o \
 	game.tileset.o \
 	background.game.map.o
 

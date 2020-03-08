@@ -5,6 +5,8 @@
 #include "../tile-data/background.game.map.h"
 #include "../tile-data/game.tileset.h"
 #include "../tile-data/gumdrop.sprite.h"
+#include "../tile-data/rolly.sprite.h"
+#include "../tile-data/ninja.sprite.h"
 
 // goals:
 // 1. have multiple autonomous agents navigating a surface
@@ -207,6 +209,8 @@ int main() {
   SPRITES_8x16;
 
   set_sprite_data(0, 12, gumdrop_sprite);
+  set_sprite_data(12, 12, rolly_sprite);
+  set_sprite_data(24, 12, ninja_sprite);
 
   init_agents();
 
@@ -236,21 +240,39 @@ void init_agents() {
     disable_agent(agent_id);
   }
 
+  // gumdrop
+  // player_agent.sprite_sheet_offset = 0;
+  // player_agent.bounds.left = -13;
+  // player_agent.bounds.right = -1;
+  // player_agent.bounds.top = -11;
+
+  // rolly
+  // player_agent.sprite_sheet_offset = 12;
+  // player_agent.bounds.left = -12;
+  // player_agent.bounds.right = -4;
+  // player_agent.bounds.top = -11;
+
+  // ninja
+  player_agent.sprite_sheet_offset = 24;
+  player_agent.bounds.left = -15;
+  player_agent.bounds.right = 0;
+  player_agent.bounds.top = -15;
+
   player_agent.enabled = TRUE;
   player_agent.sprite_id = 0;
-  player_agent.sprite_sheet_offset = 0;
+  //player_agent.sprite_sheet_offset = 24;
   player_agent.facing_direction = DOWN;
   player_agent.position.x.byte.high = 30;
   player_agent.position.y.byte.high = 40;
-  player_agent.bounds.left = -13;
-  player_agent.bounds.right = -1;
-  player_agent.bounds.top = -15;
+  //player_agent.bounds.left = -15;
+  //player_agent.bounds.right = 0;
+  //player_agent.bounds.top = -14;
   player_agent.agent_function = player_control_agent;
   player_agent.dirty = TRUE;
 
   agents[1].enabled = TRUE;
   agents[1].sprite_id = 2;
-  agents[1].sprite_sheet_offset = 0;
+  agents[1].sprite_sheet_offset = 12;
   agents[1].facing_direction = RIGHT;
   agent_x_pos(1) = 0;
   agent_y_pos(1) = 60;
@@ -259,7 +281,7 @@ void init_agents() {
 
   agents[2].enabled = TRUE;
   agents[2].sprite_id = 4;
-  agents[2].sprite_sheet_offset = 0;
+  agents[2].sprite_sheet_offset = 24;
   agents[2].facing_direction = DOWN;
   agent_x_pos(2) = 60;
   agent_y_pos(2) = 60;
