@@ -2,7 +2,6 @@
 #define __config_h__
 
 #define num_agents 10
+#define player_speed 32ul
 
 #endif
-
-// vim: ts=2 sw=2
