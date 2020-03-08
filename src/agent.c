@@ -1,5 +1,6 @@
 #include <gb/gb.h>
 #include "agent.h"
+#include "sprites.h"
 
 agent_t agents[num_agents];
 
@@ -10,29 +11,29 @@ void draw_agent(const UINT8 agent_id) {
 
   switch(facing_direction) {
     case DOWN:
-      set_sprite_tile(sid1, agents[agent_id].sprite_sheet_offset + 0);
-      set_sprite_tile(sid2, agents[agent_id].sprite_sheet_offset + 2);
+      set_sprite_tile(sid1, agents[agent_id].sprite_sheet_offset + walk_down_sprite_offset + agents[agent_id].sprite_offset + 0);
+      set_sprite_tile(sid2, agents[agent_id].sprite_sheet_offset + walk_down_sprite_offset + agents[agent_id].sprite_offset + 2);
       set_sprite_prop(sid1, get_sprite_prop(sid1) & ~ S_FLIPX);
       set_sprite_prop(sid2, get_sprite_prop(sid2) & ~ S_FLIPX);
       break;
 
     case UP:
-      set_sprite_tile(sid1, agents[agent_id].sprite_sheet_offset + 4);
-      set_sprite_tile(sid2, agents[agent_id].sprite_sheet_offset + 6);
+      set_sprite_tile(sid1, agents[agent_id].sprite_sheet_offset + walk_up_sprite_offset + agents[agent_id].sprite_offset + 0);
+      set_sprite_tile(sid2, agents[agent_id].sprite_sheet_offset + walk_up_sprite_offset + agents[agent_id].sprite_offset + 2);
       set_sprite_prop(sid1, get_sprite_prop(sid1) & ~ S_FLIPX);
       set_sprite_prop(sid2, get_sprite_prop(sid2) & ~ S_FLIPX);
       break;
 
     case RIGHT:
-      set_sprite_tile(sid1, agents[agent_id].sprite_sheet_offset + 8);
-      set_sprite_tile(sid2, agents[agent_id].sprite_sheet_offset + 10);
+      set_sprite_tile(sid1, agents[agent_id].sprite_sheet_offset + walk_right_sprite_offset + agents[agent_id].sprite_offset + 0);
+      set_sprite_tile(sid2, agents[agent_id].sprite_sheet_offset + walk_right_sprite_offset + agents[agent_id].sprite_offset + 2);
       set_sprite_prop(sid1, get_sprite_prop(sid1) & ~ S_FLIPX);
       set_sprite_prop(sid2, get_sprite_prop(sid2) & ~ S_FLIPX);
       break;
 
     case LEFT:
-      set_sprite_tile(sid1, agents[agent_id].sprite_sheet_offset + 10);
-      set_sprite_tile(sid2, agents[agent_id].sprite_sheet_offset + 8);
+      set_sprite_tile(sid1, agents[agent_id].sprite_sheet_offset + walk_right_sprite_offset + agents[agent_id].sprite_offset + 2);
+      set_sprite_tile(sid2, agents[agent_id].sprite_sheet_offset + walk_right_sprite_offset + agents[agent_id].sprite_offset + 1);
       set_sprite_prop(sid1, get_sprite_prop(sid1) | S_FLIPX);
       set_sprite_prop(sid2, get_sprite_prop(sid2) | S_FLIPX);
       break;

@@ -46,6 +46,9 @@ typedef struct _agent_t {
 
   BOOLEAN enabled;
   BOOLEAN dirty;
+  BOOLEAN animate;
+
+  UINT8 sprite_offset;
 
   direction_t facing_direction;
   pos_t position;             // based on sprite bottom right corner

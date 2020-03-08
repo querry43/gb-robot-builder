@@ -2,6 +2,7 @@
 #include <string.h>
 
 #include "agent.h"
+#include "sprites.h"
 #include "../tile-data/background.game.map.h"
 #include "../tile-data/game.tileset.h"
 #include "../tile-data/gumdrop.sprite.h"
@@ -114,6 +115,13 @@ void player_control_agent(const UINT8 agent_id) {
     new_position.y.word -= player_speed;
   }
 
+  if (j & (J_UP | J_DOWN | J_RIGHT | J_LEFT)) {
+    if (frame_counter & 0x80)
+      agents[agent_id].sprite_offset = 4;
+    else
+      agents[agent_id].sprite_offset = 0;
+  }
+
   new_x_min_tile = point_to_tile(new_position.x.byte.high + agents[agent_id].bounds.left);
   new_x_mid_tile = point_to_tile(new_position.x.byte.high + agents[agent_id].bounds.left + 7);
   new_x_max_tile = point_to_tile(new_position.x.byte.high + agents[agent_id].bounds.right);
@@ -172,6 +180,11 @@ void rotate_agent(const UINT8 agent_id) {
     else
       agents[agent_id].facing_direction++;
     agents[agent_id].dirty = TRUE;
+
+    if (agents[agent_id].sprite_offset)
+      agents[agent_id].sprite_offset = 0;
+    else
+      agents[agent_id].sprite_offset = 4;
   }
 }
 
@@ -179,6 +192,11 @@ void walk_right_agent(const UINT8 agent_id) {
   if (frame_counter == 0) {
     agent_x_pos(agent_id)++;
     agents[agent_id].dirty = TRUE;
+
+    if (agents[agent_id].sprite_offset)
+      agents[agent_id].sprite_offset = 0;
+    else
+      agents[agent_id].sprite_offset = 4;
   }
 }
 
@@ -186,6 +204,11 @@ void run_down_agent(const UINT8 agent_id) {
   if (frame_counter == 0 || frame_counter == 64 || frame_counter == 128 || frame_counter == 192) {
     agent_y_pos(agent_id)++;
     agents[agent_id].dirty = TRUE;
+
+    if (agents[agent_id].sprite_offset)
+      agents[agent_id].sprite_offset = 0;
+    else
+      agents[agent_id].sprite_offset = 4;
   }
 }
 
@@ -193,6 +216,11 @@ void sprint_left_agent(const UINT8 agent_id) {
   if (frame_counter == 0 || frame_counter == 32 || frame_counter == 64 || frame_counter == 96 || frame_counter == 128 || frame_counter == 160 || frame_counter == 192 || frame_counter == 224) {
     agent_x_pos(agent_id)--;
     agents[agent_id].dirty = TRUE;
+
+    if (agents[agent_id].sprite_offset)
+      agents[agent_id].sprite_offset = 0;
+    else
+      agents[agent_id].sprite_offset = 4;
   }
 }
 
@@ -208,9 +236,9 @@ int main() {
 
   SPRITES_8x16;
 
-  set_sprite_data(0, 12, gumdrop_sprite);
-  set_sprite_data(12, 12, rolly_sprite);
-  set_sprite_data(24, 12, ninja_sprite);
+  set_sprite_data(0, 24, gumdrop_sprite);
+  set_sprite_data(24, 24, ninja_sprite);
+  set_sprite_data(48, 24, rolly_sprite);
 
   init_agents();
 
@@ -240,39 +268,23 @@ void init_agents() {
     disable_agent(agent_id);
   }
 
-  // gumdrop
-  // player_agent.sprite_sheet_offset = 0;
-  // player_agent.bounds.left = -13;
-  // player_agent.bounds.right = -1;
-  // player_agent.bounds.top = -11;
-
-  // rolly
-  // player_agent.sprite_sheet_offset = 12;
-  // player_agent.bounds.left = -12;
-  // player_agent.bounds.right = -4;
-  // player_agent.bounds.top = -11;
-
-  // ninja
-  player_agent.sprite_sheet_offset = 24;
-  player_agent.bounds.left = -15;
-  player_agent.bounds.right = 0;
-  player_agent.bounds.top = -15;
-
   player_agent.enabled = TRUE;
   player_agent.sprite_id = 0;
-  //player_agent.sprite_sheet_offset = 24;
   player_agent.facing_direction = DOWN;
   player_agent.position.x.byte.high = 30;
   player_agent.position.y.byte.high = 40;
-  //player_agent.bounds.left = -15;
-  //player_agent.bounds.right = 0;
-  //player_agent.bounds.top = -14;
   player_agent.agent_function = player_control_agent;
   player_agent.dirty = TRUE;
 
+  player_agent.sprite_sheet_offset = gumdrop_sprite_sheet_offset;
+  player_agent.bounds.left = gumdrop_bounds_left;
+  player_agent.bounds.right = gumdrop_bounds_right;
+  player_agent.bounds.top = gumdrop_bounds_top;
+  player_agent.bounds.bottom = gumdrop_bounds_bottom;
+
   agents[1].enabled = TRUE;
   agents[1].sprite_id = 2;
-  agents[1].sprite_sheet_offset = 12;
+  agents[1].sprite_sheet_offset = gumdrop_sprite_sheet_offset;
   agents[1].facing_direction = RIGHT;
   agent_x_pos(1) = 0;
   agent_y_pos(1) = 60;
@@ -281,7 +293,7 @@ void init_agents() {
 
   agents[2].enabled = TRUE;
   agents[2].sprite_id = 4;
-  agents[2].sprite_sheet_offset = 24;
+  agents[2].sprite_sheet_offset = ninja_sprite_sheet_offset;
   agents[2].facing_direction = DOWN;
   agent_x_pos(2) = 60;
   agent_y_pos(2) = 60;
@@ -290,12 +302,39 @@ void init_agents() {
 
   agents[3].enabled = TRUE;
   agents[3].sprite_id = 6;
-  agents[3].sprite_sheet_offset = 0;
+  agents[3].sprite_sheet_offset = rolly_sprite_sheet_offset;
   agents[3].facing_direction = LEFT;
   agent_x_pos(3) = 0;
   agent_y_pos(3) = 90;
   agents[3].agent_function = sprint_left_agent;
   agents[3].dirty = TRUE;
+
+  agents[4].enabled = TRUE;
+  agents[4].sprite_id = 8;
+  agents[4].sprite_sheet_offset = ninja_sprite_sheet_offset;
+  agents[4].facing_direction = RIGHT;
+  agent_x_pos(4) = 75;
+  agent_y_pos(4) = 75;
+  agents[4].agent_function = walk_right_agent;
+  agents[4].dirty = TRUE;
+
+  agents[5].enabled = TRUE;
+  agents[5].sprite_id = 10;
+  agents[5].sprite_sheet_offset = rolly_sprite_sheet_offset;
+  agents[5].facing_direction = DOWN;
+  agent_x_pos(5) = 120;
+  agent_y_pos(5) = 0;
+  agents[5].agent_function = run_down_agent;
+  agents[5].dirty = TRUE;
+
+  agents[6].enabled = TRUE;
+  agents[6].sprite_id = 12;
+  agents[6].sprite_sheet_offset = gumdrop_sprite_sheet_offset;
+  agents[6].facing_direction = LEFT;
+  agent_x_pos(6) = 175;
+  agent_y_pos(6) = 35;
+  agents[6].agent_function = sprint_left_agent;
+  agents[6].dirty = TRUE;
 }
 
 void draw_agents() {

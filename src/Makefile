@@ -15,7 +15,6 @@ config=config.h
 	$(CC) -c -o $@ $<
 
 robot-builder.o: robot-builder.c *.h $(config)
-	$(CC) -c -o $@ $<
 
 clean:
 	rm -f *.o *.gb *.sav
